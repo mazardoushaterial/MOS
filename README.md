@@ -1,3 +1,2 @@
 # MOS
-A big mistake.
-Terrible.
+Not a mistake anymore!
