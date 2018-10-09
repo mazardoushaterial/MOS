@@ -1,6 +1,8 @@
 #ifndef PROJECTILE_H_INCLUDED
 #define PROJECTILE_H_INCLUDED
+#include "weapon.h"
 #include <cmath>
+#include <math.h>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #define floorWidth 87
@@ -17,11 +19,16 @@ class Projectile
     public:
         Projectile();
         Projectile(sf::Texture pTexture);
+
+        //Set the projectile to the weapon's stats
+        void setWeapon(Weapon weapon);
+
         //get position of the object
         void setPosition(int x, int y, int z);
-        int getAbsPositionX();
-        int getAbsPositionY();
-        int getAbsPositionZ();
+        //Rounded position
+        int getRoundPositionX();
+        int getRoundPositionY();
+        int getRoundPositionZ();
         //Float version of position
         float getRawPositionX();
         float getRawPositionY();

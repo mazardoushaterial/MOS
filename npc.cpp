@@ -1,12 +1,47 @@
-#include "weapon.h"
+#include "npc.h"
+#include "game.h"
 
-bool Weapon::isEmpty()
+Npc::Npc()
 {
-    if (ammo.amount == 0)
-        return true;
-    return false;
+
 }
 
+Npc::Npc(Game* pGame)
+{
+    std::cout << "Creature Initialized" << std::endl;
+    game = pGame; //Set the pointer to the current game
+    type = MOS;
+    sprite.setTexture(game->resourceManager.characterTextures);
+    sprite.setTextureRect(sf::IntRect(0,0,60,80));
+    x=1;
+    y=1;
+    z=0;
+    moveSouthEast();
+    updateSpritePosition();
+    sprite.setOrigin(30,0);
+    facing = 0;
+
+    weapon.loadWeapon("TESTRIFLE.wep");
+    weapon.loadAmmo("TEST.ammo");
+}
+
+void Npc::loadNpc(std::string file)
+{
+    std::ifstream getData;
+    getData.open(file.c_str());
+    getData >> this->name;
+    getData >> this->health;
+    getData.close();
+
+    std::cout << "---NEW NPC LOADED---" << std::endl;
+    std::cout << "Name: " << this->name << std::endl;
+    std::cout << "Health: " << this->health << std::endl;
+
+
+}
+
+
+/*
 void Weapon::loadWeapon(std::string file)
 {
     std::ifstream getData;
@@ -31,26 +66,4 @@ void Weapon::loadWeapon(std::string file)
     std::cout << "FireMode: " << this->fireMode << std::endl;
     std::cout << std::endl;
 }
-
-void Weapon::loadAmmo(std::string file)
-{
-    std::ifstream getData;
-    //TEST
-    getData.open(file.c_str());
-    //This is the order in which the data is retriebed
-    getData >> this->ammo.name;
-    getData >> this->ammo.amount;
-    getData >> this->ammo.damage;
-    getData >> this->ammo.modifier;
-    getData >> this->ammo.type;
-    getData.close();
-
-    std::cout << "--NEW AMMUNITION LOADED--" << std::endl;
-    std::cout << "Name: " << this->ammo.name << std::endl;
-    std::cout << "Amount: " << this->ammo.amount << std::endl;
-    std::cout << "Damage: " << this->ammo.damage << std::endl;
-    std::cout << "Modifier: " << this->ammo.modifier << std::endl;
-    std::cout << "Type: " << this->ammo.type << std::endl;
-    std::cout << std::endl;
-}
-
+*/

@@ -8,8 +8,10 @@ TestState1::TestState1(Game* pGame):
     testPlayer(pGame),
     projectile(pGame->resourceManager.projectileTextures)
 {
-    weapon.loadWeapon("TESTRIFLE");
+    //weapon.loadWeapon("TESTRIFLE.wep");
     game = pGame;
+    npc[0].setCharacter(pGame);
+    npc[0].loadCreature("TESTDUMMY.actor");
     //changeActionState(new MoveCharacter(this));
     std::string tileInfo[4][60][60];
     std::cout << "Sorry for the wait. The voxel map is loading!" << std::endl;
@@ -26,6 +28,7 @@ TestState1::TestState1(Game* pGame):
     map.raycaster.setUpVoxelMap(tileInfo);
      std::cout << "Done loading!" << std::endl;
     std::cout << "voxelMapSetUp" << std::endl;
+
 }
 
 //You should put the difference between the start points and end points here
@@ -79,7 +82,7 @@ int TestState1::lookHere(double x, double y)
   return 0;
 }
 
-void TestState1::input()
+void TestState1::playerInput()
 {
     sf::Event event;
     while (game->renderWindow.pollEvent(event))
@@ -114,7 +117,7 @@ void TestState1::input()
                                         //Make the player move
                                         testPlayer.goHere(x,y,map.getCurrentHeight(),map.walkMap);
                                         //Shoot rays
-                                        map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.facing);
+                                        map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.getFacing());
                                     }
 
                                 }
@@ -140,7 +143,7 @@ void TestState1::input()
                                && map.getCurrentHeight() == z ) //Make sure the cursor is displayed on the current ceiling height.
                                 {
                                     testPlayer.changeFacing(lookHere((testPlayer.getPositionX()-x),(testPlayer.getPositionY()-y)));
-                                    map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.facing);
+                                    map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.getFacing());
                                 }
                             }
                         }
@@ -167,7 +170,8 @@ void TestState1::input()
                                    && map.getCurrentHeight() == z ) //Make sure the cursor is displayed on the current ceiling height.
                                     {
                                         testPlayer.changeFacing(lookHere((testPlayer.getPositionX()-x),(testPlayer.getPositionY()-y)));
-                                        map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.facing);
+                                        map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.getFacing());
+                                        projectile.setWeapon(testPlayer.weapon);
                                         projectile.shoot(testPlayer.x,testPlayer.y,testPlayer.z,x,y,z);
                                     }
                                 }
@@ -211,7 +215,7 @@ void TestState1::input()
                            && ((x+y)*(floorHeight/2)) - (z*floorToFloor)  - 10< game->cursor.getPositionY() //Shift up the z level -(z*ftf)
                            && map.getCurrentHeight() == z ) //Make sure the cursor is displayed on the current ceiling height.
                             {
-                                map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.facing);
+                                map.drawOctants(testPlayer.x,testPlayer.y,testPlayer.z,testPlayer.getFacing());
                             }
                         }
                     }
@@ -239,7 +243,11 @@ void TestState1::input()
     }
     game->renderWindow.setView(map.view);
 
+}
 
+void TestState1::input()
+{
+    playerInput();
 }
 
 
@@ -280,11 +288,17 @@ int steps;
 
 void TestState1::update()
 {
+    updateProjectile();
+}
+
+void TestState1::updateProjectile()
+{
     //For the sake of speed, let's update 5 times per frame
     for (int i = 0; i < 5; i++)
     {
         projectile.update();
-        if (map.raycaster.voxelMap[projectile.getAbsPositionZ()][projectile.getAbsPositionY()][projectile.getAbsPositionX()])
+        projectileCheck(); //collisions with actors
+        if (map.raycaster.voxelMap[projectile.getRoundPositionZ()][projectile.getRoundPositionY()][projectile.getRoundPositionX()])
         {
             projectile.stopMoving();
         }
@@ -365,6 +379,11 @@ void TestState1::drawBattleScape()
                        testPlayer.draw();
                    }
 
+                   if (x == npc[0].x && y == npc[0].y && z == npc[0].z)
+                   {
+                       npc[0].draw();
+                   }
+
             }
         }
     }
@@ -373,6 +392,23 @@ void TestState1::drawBattleScape()
 void TestState1::drawProjectile()
 {
     projectile.draw(game->renderWindow);
+}
+
+void TestState1::projectileCheck()
+{
+    //If a collision occurs with the NPC
+    int i = 0;
+    if (
+        projectile.getRoundPositionY() > npc[i].getCollisionNorth() &&
+        projectile.getRoundPositionY() < npc[i].getCollisionSouth() &&
+        projectile.getRoundPositionX() < npc[i].getCollisionEast() &&
+        projectile.getRoundPositionX() > npc[i].getCollisionWest() &&
+        projectile.getRoundPositionZ() < npc[i].getCollisionUp()   &&
+        projectile.getRoundPositionZ() > npc[i].getCollisionDown()
+        )
+    {
+        std::cout << "OW! I'm hit!" << std::endl;
+    }
 }
 
 void TestState1::changeActionState(ActionStates * pAction)

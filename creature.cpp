@@ -22,6 +22,93 @@ Creature::Creature(Game* pGame)
     updateSpritePosition();
     sprite.setOrigin(30,0);
     facing = 0;
+
+    weapon.loadWeapon("TESTRIFLE.wep");
+    weapon.loadAmmo("TEST.ammo");
+}
+
+void Creature::setCharacter(Game *pGame)
+{
+    std::cout << "Creature Initialized" << std::endl;
+    game = pGame; //Set the pointer to the current game
+    type = MOS;
+    sprite.setTexture(game->resourceManager.characterTextures);
+    sprite.setTextureRect(sf::IntRect(0,0,60,80));
+    x=1;
+    y=1;
+    z=0;
+    moveSouthEast();
+    updateSpritePosition();
+    sprite.setOrigin(30,0);
+    facing = 0;
+
+    weapon.loadWeapon("TESTRIFLE.wep");
+    weapon.loadAmmo("TEST.ammo");
+}
+
+void Creature::loadCreature(std::string file)
+{
+    std::ifstream getData;
+    getData.open(file.c_str());
+    getData >> this->name;
+    getData >> this->health;
+    getData >> this->x;
+    getData >> this->y;
+    getData >> this->z;
+    getData >>this->collisionNorth;
+    getData >>this->collisionSouth;
+    getData >>this->collisionEast;
+    getData >>this->collisionWest;
+    getData >>this->collisionUp;
+    getData >>this->collisionDown;
+    getData >>this->spriteOffset;
+    getData >>this->behaviour;
+    getData.close();
+
+    updateSpritePosition();
+    sprite.setTextureRect(sf::IntRect(0,80*spriteOffset,60,80));
+
+    std::cout << "---NEW CREATURE LOADED---" << std::endl;
+    std::cout << "Name: " << this->name << std::endl;
+    std::cout << "Health: " << this->health << std::endl;
+    std::cout << "X: " << this->x << std::endl;
+    std::cout << "Y: " << this->y << std::endl;
+    std::cout << "Z: " << this->z << std::endl;
+    std::cout << "CollideNorth: " << this->collisionNorth << std::endl;
+    std::cout << "CollideSouth: " << this->collisionSouth << std::endl;
+    std::cout << "CollideEast:  " << this->collisionEast << std::endl;
+    std::cout << "CollideWest:  " << this->collisionWest << std::endl;
+    std::cout << "CollideUp:    " << this->collisionUp << std::endl;
+    std::cout << "CollideDown:  " << this->collisionDown << std::endl;
+    std::cout << "Sprite offset: " << this->spriteOffset << std::endl;
+    std::cout << "behaviour: " << this->spriteOffset << std::endl;
+
+
+}
+
+int Creature::getCollisionNorth()
+{
+    return collisionNorth + this->y*16; // y*16 = length of a tile
+}
+int Creature::getCollisionSouth()
+{
+    return collisionSouth + this->y*16;
+}
+int Creature::getCollisionEast()
+{
+    return collisionEast + this->x*16; // x*16 = breadth of a tile
+}
+int Creature::getCollisionWest()
+{
+    return collisionWest + this->x*16;
+}
+int Creature::getCollisionUp()
+{
+    return collisionUp + this->z*24; // z*16 = height of a tile
+}
+int Creature::getCollisionDown()
+{
+    return collisionDown + this->z*24;
 }
 
 void Creature::draw()
@@ -139,6 +226,11 @@ void Creature::moveUp()
     updateSpritePosition();
 }
 
+int Creature::getFacing()
+{
+    return facing;
+}
+
 void Creature::move(int x, int y)
 {
     this->x += x;
@@ -166,4 +258,22 @@ int Creature::getPositionX()
 int Creature::getPositionY()
 {
     return y;
+}
+
+//If the creature has no ammo
+bool Creature::noAmmo()
+{
+    if (this->weapon.isEmpty())
+    {
+        return true;
+    }
+    return false;
+}
+
+void Creature::mindlessBehaviour()
+{
+    if (behaviour == "mindless")
+    {
+        //do stuff
+    }
 }

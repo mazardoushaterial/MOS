@@ -9,6 +9,8 @@
 #include "actionStates.h"
 #include "moveCharacter.h"
 #include "weapon.h"
+#include "player.h"
+#include "npc.h"
 #include <SFML/Graphics.hpp>
 class ActionStates;
 class MoveCharacter;
@@ -23,15 +25,19 @@ class TestState1: public State
         void update();
         void draw();
         void input();
+        void playerInput();
         void changeActionState(ActionStates * pAction);
         void drawBattleScape();
         void drawProjectile();
+        void updateProjectile();
+        void projectileCheck(); //check if a projectile hit an actor
         int lookHere(double x, double y);
         //void shoot(int x1, int y1, int z1, int x2, int y2, int z2);
         Game * game;
         Map map;
-        Creature testPlayer;
-        Weapon weapon;
+        Player testPlayer;
+        Npc npc[1];
+        //Weapon weapon;
     protected:
         //MapHandler mapHandler;
 };

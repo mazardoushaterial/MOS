@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="MOS" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/MOS" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/MOS" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="DDA.cpp" />
+		<Unit filename="DDA.h" />
+		<Unit filename="LOFMap.cpp" />
+		<Unit filename="LOFMap.h" />
+		<Unit filename="actionStates.cpp" />
+		<Unit filename="actionStates.h" />
+		<Unit filename="ammunition.cpp" />
+		<Unit filename="ammunition.h" />
+		<Unit filename="collisionMap.cpp" />
+		<Unit filename="collisionMap.h" />
+		<Unit filename="creature.cpp" />
+		<Unit filename="creature.h" />
+		<Unit filename="cursor.cpp" />
+		<Unit filename="cursor.h" />
+		<Unit filename="djikstra.h" />
+		<Unit filename="floor.h" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="map.cpp" />
+		<Unit filename="map.h" />
+		<Unit filename="mapHandler.cpp" />
+		<Unit filename="mapHandler.h" />
+		<Unit filename="mapLoader.h" />
+		<Unit filename="mosMan.cpp" />
+		<Unit filename="mosMan.h" />
+		<Unit filename="moveCharacter.cpp" />
+		<Unit filename="moveCharacter.h" />
+		<Unit filename="npc.cpp" />
+		<Unit filename="npc.h" />
+		<Unit filename="octants.cpp" />
+		<Unit filename="octants.h" />
+		<Unit filename="player.cpp" />
+		<Unit filename="player.h" />
+		<Unit filename="projectile.cpp" />
+		<Unit filename="projectile.h" />
+		<Unit filename="resourceManager.cpp" />
+		<Unit filename="resourceManager.h" />
+		<Unit filename="state.cpp" />
+		<Unit filename="state.h" />
+		<Unit filename="testDummy.cpp" />
+		<Unit filename="testDummy.h" />
+		<Unit filename="testState1.cpp" />
+		<Unit filename="testState1.h" />
+		<Unit filename="tile.h" />
+		<Unit filename="tilemap.h" />
+		<Unit filename="weapon.cpp" />
+		<Unit filename="weapon.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

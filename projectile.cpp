@@ -12,22 +12,27 @@ Projectile::Projectile(sf::Texture pTexture)
     setPosition(0,0,0);
     texture = pTexture;
     sprite.setTexture(texture);
-    sprite.setTextureRect(sf::IntRect(0,0,16,16));
+    sprite.setTextureRect(sf::IntRect(16,0,16,16));
 }
 
-int Projectile::getAbsPositionX()
+void Projectile::setWeapon(Weapon weapon)
 {
-    return std::abs(x);
+    this->sprite.setTextureRect(sf::IntRect(weapon.ammo.modifier*16,0,16,16));
 }
 
-int Projectile::getAbsPositionY()
+int Projectile::getRoundPositionX()
 {
-    return std::abs(y);
+    return round(x);
 }
 
-int Projectile::getAbsPositionZ()
+int Projectile::getRoundPositionY()
 {
-    return std::abs(z);
+    return round(y);
+}
+
+int Projectile::getRoundPositionZ()
+{
+    return round(z);
 }
 
 float Projectile::getRawPositionX()
@@ -129,6 +134,16 @@ bool Projectile::outOfBounds()
 
 void Projectile::shoot(int x1, int y1, int z1, int x2, int y2, int z2)
 {
+    //
+    // /!\WARNING/!\
+    // You should set up the projectile using this->setWeapon first!
+    //
+
+
+    if (isMoving())
+        return;
+    if (x1 == x2 && y1 == y2 && z1 == z2)
+        return;
     double oAngle = atan2(x1-x2,y1-y2);
     std::cout << "oAngle: " << oAngle << std::endl;
     //Convert to collision coord

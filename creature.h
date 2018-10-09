@@ -1,6 +1,8 @@
 #ifndef CREATURE_H_INCLUDED
 #define CREATURE_H_INCLUDED
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <string>
 
 #define MOS 0
 
@@ -17,6 +19,7 @@
 #define tileWidth 87
 #define tileHeight 120
 #define floorToFloor 73 //distance from floor to floor above.
+#include "weapon.h"
 
 class Game;
 class Creature
@@ -25,8 +28,11 @@ class Creature
         Creature();
         Creature(Game* pGame);
         sf::Sprite sprite;
+        void setCharacter(Game *pGame);
         int getPositionX();
         int getPositionY();
+
+        std::string behaviour;
 
         void move(int x, int y);
         void setPosition(int x, int y);
@@ -47,10 +53,33 @@ class Creature
         void moveSouthWest();
         void moveUp();
         void moveDown();
+        int getFacing();
+
+        void loadCreature(std::string file);
+
+        //These colliders are in terms on the map, not relative to one tile.
+        int getCollisionNorth();
+        int getCollisionSouth();
+        int getCollisionEast();
+        int getCollisionWest();
+        int getCollisionUp();
+        int getCollisionDown();
+
+        bool noAmmo();
 
         void draw();
+        Weapon weapon;
 
-    public:
+        //Autonomous Actions
+        void charge(); //Human wave attacks and suicide rushes
+        void moveTo(Creature other); //Move towards another creature
+        void selectTarget(); //Select a target
+
+        void aggressiveBehaviour();
+        void PreservativeBehaviour();
+        void mindlessBehaviour();
+
+    protected:
         //Stats for humanoid characters
         int bravery;
         int accuracy;
@@ -80,6 +109,19 @@ class Creature
         //Items in hand or inventory
         std::string leftHandItem;
         std::string rightHandItem;
+
+        //collision fields...
+        //...in terms of being in a 16*16*24 tile, independent of the map.
+        //...origin at (0,0,0).
+        int collisionNorth;
+        int collisionSouth;
+        int collisionEast;
+        int collisionWest;
+        int collisionUp;
+        int collisionDown;
+
+        int spriteOffset; //The position of the sprite in the character spritemap
+
 
     protected:
         Game* game;

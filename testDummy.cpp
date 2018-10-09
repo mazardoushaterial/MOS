@@ -1,15 +1,15 @@
-#include "player.h"
+#include "testDummy.h"
 #include "game.h"
 
-Player::Player(Game* pGame)
+TestDummy::TestDummy(Game* pGame)
 {
     std::cout << "Creature Initialized" << std::endl;
     game = pGame; //Set the pointer to the current game
     type = MOS;
     sprite.setTexture(game->resourceManager.characterTextures);
-    sprite.setTextureRect(sf::IntRect(0,0,60,80));
-    x=12;
-    y=12;
+    sprite.setTextureRect(sf::IntRect(0,80,60,80));
+    x=2;
+    y=2;
     z=0;
     moveSouthEast();
     updateSpritePosition();

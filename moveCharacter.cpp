@@ -41,7 +41,7 @@ void MoveCharacter::input()
                                         //Make the player move
                                         state->testPlayer.goHere(x,y,state->map.getCurrentHeight(),state->map.walkMap);
                                         //Shoot rays
-                                        state->map.drawOctants(state->testPlayer.x,state->testPlayer.y,state->testPlayer.z,state->testPlayer.facing);
+                                        state->map.drawOctants(state->testPlayer.x,state->testPlayer.y,state->testPlayer.z,state->testPlayer.getFacing());
                                     }
 
                                 }
@@ -87,7 +87,7 @@ void MoveCharacter::input()
                            && ((x+y)*(floorHeight/2)) - (z*floorToFloor)  - 10< state->game->cursor.getPositionY() //Shift up the z level -(z*ftf)
                            && state->map.getCurrentHeight() == z ) //Make sure the cursor is displayed on the current ceiling height.
                             {
-                                state->map.drawOctants(state->testPlayer.x,state->testPlayer.y,state->testPlayer.z,state->testPlayer.facing);
+                                state->map.drawOctants(state->testPlayer.x,state->testPlayer.y,state->testPlayer.z,state->testPlayer.getFacing());
                             }
                         }
                     }

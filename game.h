@@ -8,7 +8,15 @@
 #include "mapHandler.h"
 #include "player.h"
 #include "cursor.h"
-
+//////////
+//TODO:
+//////////
+//  On-going:
+//[Added]Add enemies
+//[Added]Add creature collision boxes
+//Enemy behaviours
+//  Finished:
+//
 
 class Game
 {

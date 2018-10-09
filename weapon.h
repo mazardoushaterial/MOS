@@ -3,20 +3,25 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "ammunition.h"
 
-#define NONE 0
-#define BALLISTIC 1
-#define FIRE 2
-#define LASER 3
 
 class Weapon
 {
   public:
     bool isEmpty(); // returns true if no ammunition is left
     void loadWeapon(std::string name);
+    void loadAmmo(std::string name);
+    Ammunition ammo;
   private:
-    int ammo;
+    std::string name;
     int maxAmmo;
+    int damage;
+    int accuracyBonus;
+    std::string acceptedAmmo; //Accepted ammo type
+    std::string modifier; //Special stat
+    std::string fireMode; //3rnd burst, full auto, single fire, etc.
+    int meleeDamage;
 };
 
 
