@@ -1,0 +1,239 @@
+2018-10-10
+/!\ ATTENTION /!\
+THIS WEB-READABLE ENCYCLOPEDIA SHOULD SUPPLEMENT THE
+OPEN OFFICE DOCUMENT, NOT THE OTHER WAY AROUND!
+REPEAT: THIS DOCUMENT DERIVES FROM THE OPEN OFFICE DOCUMENT.
+
+note: Read the official document for proper formatting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MOS
+Design Encyclopedia
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Introduction
+		Hello, I am Spaghetti. This design document is to clear up and define my source code. I am not an expert programmer, so if you'd like to refactor you may. You can find the source code at the following link:			
+
+	https://github.com/mazardoushaterial/MOS
+
+You can compile the code yourself, I also have a Code::Blocks project file if you'd like an organized copy of the source. 
+
+	Note: Some files are obsolete, if a file is not needed, you can delete 	them, but it's been far too long for me to decide what stays and what 	goes. Be wary.
+
+					What is MOS?
+		
+	MOS is a Turn-Based tactical Roleplaying game engine. Games with engines in this style are: X-COM UFO Defense, Fallout 1 & 2, and Jagged Alliance. 
+	
+	What are the characteristics of these types of games?
+	-Grid based movement
+	-Time units for actor actions
+	-RPG-like stats
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	The map:
+		The map consists of a few parts:
+			-A tile which consists of
+				-a LOF collision data structure
+				-a sprite
+	There are two types of tiles which exist
+		-A Wall tile 
+			->more vertical and is 16*16*24
+		-A Floor tile
+			->More horizontal, and consist of a 2-D square
+
+	Map
+		The map is a data structure which contains all the tiles and 			info to properly simulate a real-world space.
+
+		Drawing the map
+			-The drawing algorithm is a 3-D version of the “painter's 				algorithm”. The farthest most tiles are drawn before the 				closest tiles going from front to back.
+
+	LOF Collision Structure
+		-LOF Stands for Line Of Fire
+		-LOF maps consist of 16*16*24 booleans
+			->These booleans are used for projectile collisions
+		-Every tile has a LOF map
+
+	Line of sight
+		-The line of sight uses the DDA (Digital Differential Analyzer) 			to establish a line of sight between an actor and a tile.				It takes place in Voxel-Space and collides with actors and LOF 			maps.
+
+		How it works
+		-The RAYCASTING object accepts a TILEMAP array
+		-The TILEMAP is converted into a VOXELSPACE map 
+		using the LOF data type
+		-The RAYCASTING object accepts where the actor is facing
+		 and the actor's position on the tilemap
+		-A ray is beamed from the centre of the character to
+		 a 90deg Field of view
+		-If a ray hits a voxel then the ray stops
+			->Any intermediate tiles that the beam hits is visible
+
+	Creature
+		A creature is the basic type of actor in the MOS game. An actor 		can be an NPC or a player
+		
+			Translation of the actor file (in order)
+			-The character's name (string)
+    			-The character's current health(int)
+    			-The character's tile position on x(int)
+    			-The character's tile position on y(int)
+    			-The character's tile position on z(int)
+			-The character's collision box in voxels. (6xint)
+				->It's relative to (0,0,0) of the creature's
+				  voxel-space position
+				->The order: North South East West Up Down
+    			-The y-offset of the sprite in “characterTextures.png”(int)
+    			-The character's behaviour settings (string)
+
+	
+
+	Enemy NPC behaviour
+		
+	Behaviour
+	Enemies have different behaviours for variety in combat. It forces a 	diversity in tactics on the battlescape.
+	
+		Different personalities
+			Aggressive
+				INFO
+					-Patrols
+					-Not scared to die
+				ACTUAL
+					-Moves until the player is seen
+					-Attacks and wastes ammunition
+				MODE
+					-Preference: Shoots Auto
+				MELEE
+					-Charges when out of ammo
+			Preservative
+				INFO
+					-Hides
+				ACTUAL
+					-If the player is seen shoot and then run
+				MODE
+					-Preference: Shoots Aimed
+				MELEE
+					-NULL 
+			Mindless
+				INFO
+					-Non-enemy NPCs (animals, civilians)
+				ACTUAL
+					-walks randomly
+				MODE
+					-No mode of attack
+			
+
+	Projectiles
+		-have a a vector. The vector comprises of a position vector and 			a velocity vector. 
+		
+		How it works
+		
+			The projectile... 
+				-must be set up with setWeapon()
+				-is then shot with shoot()
+				-'s trajectory() is calculated and stored
+				
+			next: in the battleScape state (testState1.cpp) the 					projectile is processed for collisions. projectile.cpp is 				simply the data class which facilitates the variables for 				processing.
+
+		setWeapon() 
+			->Sets up the projectile's variables
+		shoot()
+			->Sets the projectile for shooting
+		trajectory()
+			->Set the vector direction of the projectile [in shoot()]
+		update()
+			->Move the projectile 
+		check()
+			->Check if the projectile is stopped 
+
+		In teststate1.cpp:
+		
+		updateProjectile()
+			->moves the projectile with projectile.update()
+			->checks for collisions [projectile.check()]
+				-Stops the projectile [projectile.stop()]
+		
